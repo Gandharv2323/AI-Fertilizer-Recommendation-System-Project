@@ -47,47 +47,6 @@ g++ -o cp_oops_advanced.exe cp_oops.cpp -std=c++11
 Navigate to **http://localhost:3000** to use the web application.
 
 
-## 📁 Project Structure
-
-```
-oop_cp/
-├── 📄 README.md                          # This file - Project overview
-├── 📄 backend-server.js                  # Node.js REST API server
-├── 📄 cp_oops.cpp                        # C++ OOP implementation (310 lines)
-├── 📄 cp_oops_advanced.exe               # Compiled C++ executable
-├── 📄 package.json                       # Backend dependencies
-├── 📄 test_knn_system.js                 # Automated test suite (100 tests)
-├── 📄 test_knn_variety.js                # Output variety checker (10 tests)
-│
-├── 📂 fertilizer-frontend/               # React web application
-│   ├── 📂 src/
-│   │   ├── 📂 components/                # UI components
-│   │   │   ├── InputForm.jsx            # User input form
-│   │   │   ├── ResultsCard.jsx          # Recommendation display
-│   │   │   ├── Chart.jsx                # Data visualization
-│   │   │   └── HistoricalDataInsights.jsx
-│   │   ├── 📂 api/
-│   │   │   └── fertilizerAPI.js         # API integration
-│   │   ├── App.jsx                       # Main application
-│   │   ├── main.jsx                      # Entry point
-│   │   └── index.css                     # Global styles
-│   ├── 📄 index.html                     # HTML template
-│   ├── 📄 vite.config.js                 # Vite configuration
-│   ├── 📄 tailwind.config.js             # Tailwind CSS config
-│   └── 📄 README.md                      # Frontend documentation
-│
-└── 📂 docs/                               # 📚 Complete Documentation Hub
-    ├── 📄 PRESENTATION_GUIDE.md          # Presentation script (700+ lines)
-    ├── 📄 DEMO_INPUTS_FOR_PRESENTATION.md # Demo scenarios & Q&A
-    ├── 📄 OOP_ADVANCED_EXPLANATION.md    # OOP concepts deep dive
-    ├── 📄 OOP_PROJECT_GUIDE.md           # Project guide & architecture
-    ├── 📄 OOP_VISUAL_GUIDE.md            # Visual diagrams & flowcharts
-    ├── 📄 BACKEND_FRONTEND_CONNECTION.md # Integration documentation
-    ├── 📄 PROJECT_STATUS_REPORT.md       # Current system status
-    └── 📄 CLEANUP_PLAN.md                # Maintenance & cleanup audit
-```
-
-
 ## ✨ Features
 
 ### 🎯 **Core Capabilities**
@@ -224,22 +183,6 @@ GET /api/health
 GET /api/historical-data
 ```
 
-
-## 📚 Documentation
-
-Comprehensive documentation is available in the `/docs` folder:
-
-### 📖 **User Guides**
-
-### 🎓 **Educational Resources**
-
-### 🔧 **Technical Documentation**
-
-### 💻 **Frontend Documentation**
-
-
-## 🧪 Testing
-
 ### Run Automated Tests
 
 ```powershell
@@ -302,54 +245,3 @@ taskkill /PID <process_id> /F
 # Use C++11 standard flag
 g++ -o cp_oops_advanced.exe cp_oops.cpp -std=c++11
 ```
-
-
-## 📈 Future Enhancements
-
-
-
-## 🤝 Contributing
-
-This is an academic project. Feel free to fork and enhance!
-
-### Development Setup
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-## 📄 License
-
-This project is created for educational purposes as part of an Object-Oriented Programming course.
-
-
-## 👨‍💻 Author
-
-**Academic Project**  
-Course: Object-Oriented Programming  
-Institution: [Your Institution]  
-Date: November 2025
-
-
-## 🙏 Acknowledgments
-
-
-
-## 📞 Support & Contact
-
-For questions, issues, or suggestions:
-
-
-**⭐ If this project helped you understand OOP concepts or full-stack development, please star it!**
-
-
-<div align="center">
-  <strong>Built with ❤️ for modern agriculture and smart farming initiatives</strong>
-  <br><br>
-  🌾 Happy Farming! 🚜
-</div>
-=======
-# AI-Fertilizer-Recommendation-System-Project
->>>>>>> e14c01482efe836190715bf64a9f22b8a47f45bd
