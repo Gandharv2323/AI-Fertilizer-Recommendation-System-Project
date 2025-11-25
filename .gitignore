@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Build outputs
+dist/
+
+# Python
+__pycache__/
+
+# Logs
+*.log
