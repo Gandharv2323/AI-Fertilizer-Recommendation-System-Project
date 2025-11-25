@@ -4,7 +4,6 @@
 
 Advanced Object-Oriented Programming (OOP) project demonstrating fertilizer recommendations using K-Nearest Neighbors (KNN) algorithm with real-time web interface.
 
----
 
 ## 📋 Quick Overview
 
@@ -16,14 +15,10 @@ Advanced Object-Oriented Programming (OOP) project demonstrating fertilizer reco
 | **Algorithm** | KNN (k=3) | ✅ 25 historical records |
 | **Dataset** | Wheat, Maize, Rice | ✅ Indian pricing |
 
----
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- **Node.js** 16+ (for backend & frontend)
-- **C++ Compiler** (g++ with C++11 support)
-- **npm** or **yarn**
 
 ### Installation & Run
 
@@ -51,7 +46,6 @@ g++ -o cp_oops_advanced.exe cp_oops.cpp -std=c++11
 ### Open in Browser
 Navigate to **http://localhost:3000** to use the web application.
 
----
 
 ## 📁 Project Structure
 
@@ -93,30 +87,15 @@ oop_cp/
     └── 📄 CLEANUP_PLAN.md                # Maintenance & cleanup audit
 ```
 
----
 
 ## ✨ Features
 
 ### 🎯 **Core Capabilities**
-- **Smart Recommendations** - KNN algorithm finds 3 nearest historical matches
-- **Real-time Calculations** - Instant fertilizer suggestions (DAP, Urea, MOP)
-- **Indian Pricing** - Accurate ₹/kg rates with subsidy information
-- **Multi-Crop Support** - Wheat, Maize, and Rice optimized datasets
 
 ### 💻 **Technical Highlights**
-- **Advanced C++ OOP** - All 5 principles: Encapsulation, Inheritance, Polymorphism, Abstraction, Composition
-- **REST API** - Express.js backend with CORS support
-- **Modern Frontend** - React 18 + Vite + TailwindCSS
-- **Responsive Design** - Works on desktop, tablet, and mobile
-- **Data Visualization** - Interactive charts using Recharts library
 
 ### 🧪 **Quality Assurance**
-- Automated test suite (100 test cases)
-- Output variety validation
-- Historical data insights panel
-- Error handling & validation
 
----
 
 ## 🎓 Learning Objectives
 
@@ -147,7 +126,6 @@ This project demonstrates:
    - Documentation standards
    - Testing methodologies
 
----
 
 ## 📊 Dataset Information
 
@@ -167,7 +145,6 @@ This project demonstrates:
 | **Urea** | Primary Nitrogen source | ₹6/kg (₹267/45kg bag, subsidized) |
 | **MOP** (Muriate of Potash) | Potassium source | ₹26/kg (₹1,300/50kg bag) |
 
----
 
 ## 🔬 Algorithm: K-Nearest Neighbors (KNN)
 
@@ -199,13 +176,9 @@ This project demonstrates:
 **Input:** Wheat, Yield=3.5 t/ha, N=95, P=30, K=20
 
 **Process:**
-- Find 3 closest Wheat records in historical data
-- Example neighbors: Record #4 (distance: 12.3), Record #8 (distance: 15.7), Record #3 (distance: 18.2)
-- Average their fertilizer values
 
 **Output:** DAP: 75 kg/ha, Urea: 150 kg/ha, MOP: 100 kg/ha
 
----
 
 ## 🎯 API Endpoints
 
@@ -251,31 +224,19 @@ GET /api/health
 GET /api/historical-data
 ```
 
----
 
 ## 📚 Documentation
 
 Comprehensive documentation is available in the `/docs` folder:
 
 ### 📖 **User Guides**
-- **[OOP Project Guide](docs/OOP_PROJECT_GUIDE.md)** - Complete project overview and architecture
-- **[OOP Visual Guide](docs/OOP_VISUAL_GUIDE.md)** - Diagrams, flowcharts, and visual explanations
-- **[Backend-Frontend Connection](docs/BACKEND_FRONTEND_CONNECTION.md)** - Integration guide
 
 ### 🎓 **Educational Resources**
-- **[OOP Advanced Explanation](docs/OOP_ADVANCED_EXPLANATION.md)** - Deep dive into all OOP concepts with examples
-- **[Presentation Guide](docs/PRESENTATION_GUIDE.md)** - Complete 700+ line presentation script
-- **[Demo Inputs](docs/DEMO_INPUTS_FOR_PRESENTATION.md)** - Demo scenarios and Q&A preparation
 
 ### 🔧 **Technical Documentation**
-- **[Project Status Report](docs/PROJECT_STATUS_REPORT.md)** - Current system status and verification
-- **[Cleanup Plan](docs/CLEANUP_PLAN.md)** - Maintenance audit and file organization
 
 ### 💻 **Frontend Documentation**
-- **[Frontend README](fertilizer-frontend/README.md)** - React app setup, customization, and deployment
-- **[Pricing Info](fertilizer-frontend/PRICING_INFO.md)** - Detailed fertilizer pricing data
 
----
 
 ## 🧪 Testing
 
@@ -290,12 +251,7 @@ node test_knn_variety.js
 ```
 
 ### Test Categories
-- **Realistic scenarios** (60 tests) - Normal farming conditions
-- **Edge cases** (20 tests) - Boundary values
-- **Boundary tests** (10 tests) - Extreme values
-- **Random tests** (10 tests) - Varied random inputs
 
----
 
 ## 🎨 Customization
 
@@ -326,7 +282,6 @@ function getRecommendation(crop, targetYield, N, P, K, k = 3) {
 
 Edit `fertilizer-frontend/tailwind.config.js` for theme customization.
 
----
 
 ## 🐛 Troubleshooting
 
@@ -340,9 +295,6 @@ taskkill /PID <process_id> /F
 ```
 
 ### Frontend Connection Error
-- Ensure backend is running on port 8080
-- Check `fertilizerAPI.js` has correct API_BASE_URL
-- Verify CORS is enabled in backend-server.js
 
 ### C++ Compilation Issues
 ```powershell
@@ -351,20 +303,10 @@ taskkill /PID <process_id> /F
 g++ -o cp_oops_advanced.exe cp_oops.cpp -std=c++11
 ```
 
----
 
 ## 📈 Future Enhancements
 
-- [ ] Add more crops (Cotton, Sugarcane, Vegetables)
-- [ ] Implement weather-based recommendations
-- [ ] Add soil pH consideration
-- [ ] Create mobile app version
-- [ ] Integrate with government agriculture APIs
-- [ ] Add multi-language support (Hindi, Marathi, etc.)
-- [ ] Implement user authentication and history tracking
-- [ ] Add export to PDF functionality
 
----
 
 ## 🤝 Contributing
 
@@ -377,13 +319,11 @@ This is an academic project. Feel free to fork and enhance!
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
----
 
 ## 📄 License
 
 This project is created for educational purposes as part of an Object-Oriented Programming course.
 
----
 
 ## 👨‍💻 Author
 
@@ -392,32 +332,24 @@ Course: Object-Oriented Programming
 Institution: [Your Institution]  
 Date: November 2025
 
----
 
 ## 🙏 Acknowledgments
 
-- Indian Council of Agricultural Research (ICAR) for fertilizer pricing data
-- Agricultural universities for NPK recommendation guidelines
-- Open-source community for React, Vite, and TailwindCSS
-- All contributors to the Node.js and Express ecosystems
 
----
 
 ## 📞 Support & Contact
 
 For questions, issues, or suggestions:
-- 📧 Email: [Your email]
-- 📂 Documentation: See `/docs` folder
-- 🐛 Issues: Use GitHub issues (if applicable)
 
----
 
 **⭐ If this project helped you understand OOP concepts or full-stack development, please star it!**
 
----
 
 <div align="center">
   <strong>Built with ❤️ for modern agriculture and smart farming initiatives</strong>
   <br><br>
   🌾 Happy Farming! 🚜
 </div>
+=======
+# AI-Fertilizer-Recommendation-System-Project
+>>>>>>> e14c01482efe836190715bf64a9f22b8a47f45bd
