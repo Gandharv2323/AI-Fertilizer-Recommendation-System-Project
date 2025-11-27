@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sprout, TrendingUp, Loader2 } from 'lucide-react';
+import { Sprout, TrendingUp, Loader2, History } from 'lucide-react';
 import InputForm from './components/InputForm';
 import ResultsCard from './components/ResultsCard';
 import Chart from './components/Chart';
@@ -15,7 +15,7 @@ function App() {
 
   const handleRecommendation = async (formData) => {
     setLoading(true);
-    
+
     try {
       // Call real backend API
       const response = await fetch('http://localhost:8080/api/recommend', {
@@ -53,40 +53,56 @@ function App() {
       const updated = [newRec, ...savedRecommendations].slice(0, 10); // Keep last 10
       setSavedRecommendations(updated);
       localStorage.setItem('fertilizer-recommendations', JSON.stringify(updated));
-      alert('Recommendation saved successfully! 💾');
+      alert('Recommendation saved successfully!');
     }
   };
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-8">
-        <div className="text-center animate-fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-emerald-500 rounded-full mb-4 shadow-lg animate-bounce-slow">
-            <Sprout className="w-8 h-8 text-white" />
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-[#E8F5E9] p-2 rounded-lg">
+                <Sprout className="w-6 h-6 text-[#2E7D32]" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-[#1A1A1A]">
+                  AI Fertilizer Recommendation System
+                </h1>
+                <p className="text-sm text-gray-500 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4" />
+                  Enterprise Grade Precision Agriculture Tool
+                </p>
+              </div>
+            </div>
+            <div className="hidden sm:block text-right">
+              <p className="text-sm font-medium text-gray-900">System Status: Online</p>
+              <p className="text-xs text-gray-500">v2.4.0 (Stable)</p>
+            </div>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary-700 to-emerald-700 bg-clip-text text-transparent mb-2">
-            AI Fertilizer Recommendation System
-          </h1>
-          <p className="text-gray-600 text-lg flex items-center justify-center gap-2">
-            <TrendingUp className="w-5 h-5" />
-            Powered by K-Nearest Neighbors Algorithm
-          </p>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column - Input Form */}
-        <div className="space-y-6">
+        <div className="space-y-5">
           <InputForm onSubmit={handleRecommendation} loading={loading} />
-          
+
           {/* Historical Data Insights */}
           <HistoricalDataInsights />
+
+          {/* Visual Analysis Chart - Moved here to balance layout */}
+          {!loading && recommendation && (
+            <Chart recommendation={recommendation} />
+          )}
         </div>
 
         {/* Right Column - Results */}
-        <div className="space-y-6">
+        <div className="space-y-5">
           {loading && (
             <div className="card flex items-center justify-center py-20">
               <div className="text-center">
@@ -97,46 +113,60 @@ function App() {
           )}
 
           {!loading && recommendation && (
-            <>
-              <ResultsCard 
-                recommendation={recommendation} 
-                onSave={saveRecommendation}
-              />
-              
-              <Chart recommendation={recommendation} />
-            </>
+            <ResultsCard
+              recommendation={recommendation}
+              onSave={saveRecommendation}
+            />
           )}
 
           {!loading && !recommendation && (
-            <div className="card text-center py-20">
-              <div className="text-6xl mb-4">🌾</div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+            <div className="card-clean text-center py-20">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-[#E8F5E9] rounded-full mb-6">
+                <Sprout className="w-10 h-10 text-[#2E7D32]" />
+              </div>
+              <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">
                 Ready to Optimize Your Harvest?
               </h3>
-              <p className="text-gray-500">
-                Enter your crop and soil data to get personalized fertilizer recommendations
+              <p className="text-gray-500 max-w-md mx-auto">
+                Enter your crop details and soil nutrient levels to receive personalized fertilizer recommendations based on historical data.
               </p>
             </div>
           )}
 
           {/* Saved Recommendations */}
           {savedRecommendations.length > 0 && (
-            <div className="card">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">📚 Recent Recommendations</h3>
-              <div className="space-y-2 max-h-60 overflow-y-auto">
+            <div className="card-clean">
+              <h3 className="text-lg font-bold text-[#1A1A1A] mb-4 flex items-center gap-2">
+                <History className="w-5 h-5 text-gray-600" />
+                Recent Recommendations
+              </h3>
+              <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                 {savedRecommendations.map((rec) => (
-                  <div key={rec.id} className="bg-gray-50 rounded-lg p-3 text-sm">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <span className="font-medium text-primary-700">{rec.crop}</span>
-                        <span className="text-gray-500 ml-2">({rec.yield} t/ha)</span>
+                  <div key={rec.id} className="group bg-white border border-gray-200 rounded-lg p-3 hover:border-[#2E7D32] transition-colors shadow-sm">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-[#1A1A1A]">{rec.crop}</span>
+                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                          Yield: {rec.yield} t/ha
+                        </span>
                       </div>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-[10px] text-gray-400">
                         {new Date(rec.timestamp).toLocaleDateString()}
                       </span>
                     </div>
-                    <div className="text-xs text-gray-600 mt-1">
-                      DAP: {rec.DAP} | Urea: {rec.Urea} | MOP: {rec.MOP}
+                    <div className="text-xs text-gray-600 mt-2 flex gap-3">
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                        DAP: {rec.DAP}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        Urea: {rec.Urea}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                        MOP: {rec.MOP}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -160,11 +190,11 @@ const simulateBackendAPI = (formData) => {
     setTimeout(() => {
       // Historical dataset (same as C++ code)
       const dataset = [
-        {crop: "Wheat", soilN: 120, soilP: 50, soilK: 40, yield: 4.2, dap: 100, urea: 200, mop: 150},
-        {crop: "Maize", soilN: 90, soilP: 45, soilK: 30, yield: 5.0, dap: 80, urea: 180, mop: 140},
-        {crop: "Rice", soilN: 110, soilP: 60, soilK: 50, yield: 6.0, dap: 120, urea: 220, mop: 160},
-        {crop: "Wheat", soilN: 130, soilP: 55, soilK: 45, yield: 4.8, dap: 105, urea: 210, mop: 155},
-        {crop: "Maize", soilN: 100, soilP: 48, soilK: 35, yield: 5.5, dap: 90, urea: 190, mop: 145}
+        { crop: "Wheat", soilN: 120, soilP: 50, soilK: 40, yield: 4.2, dap: 100, urea: 200, mop: 150 },
+        { crop: "Maize", soilN: 90, soilP: 45, soilK: 30, yield: 5.0, dap: 80, urea: 180, mop: 140 },
+        { crop: "Rice", soilN: 110, soilP: 60, soilK: 50, yield: 6.0, dap: 120, urea: 220, mop: 160 },
+        { crop: "Wheat", soilN: 130, soilP: 55, soilK: 45, yield: 4.8, dap: 105, urea: 210, mop: 155 },
+        { crop: "Maize", soilN: 100, soilP: 48, soilK: 35, yield: 5.5, dap: 90, urea: 190, mop: 145 }
       ];
 
       // Calculate distances
@@ -181,10 +211,10 @@ const simulateBackendAPI = (formData) => {
       // Sort and get k=3 nearest neighbors
       distances.sort((a, b) => a.distance - b.distance);
       const k = 3;
-      
+
       let sumDAP = 0, sumUrea = 0, sumMOP = 0;
       const neighbors = [];
-      
+
       for (let i = 0; i < k && i < distances.length; i++) {
         const idx = distances[i].index;
         sumDAP += dataset[idx].dap;

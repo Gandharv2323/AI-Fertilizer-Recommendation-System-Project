@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Leaf } from 'lucide-react';
+import { Send, Leaf, Sprout, Scale, FlaskConical, Beaker } from 'lucide-react';
 
 const InputForm = ({ onSubmit, loading }) => {
   const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ const InputForm = ({ onSubmit, loading }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.crop) newErrors.crop = 'Please select a crop';
     if (!formData.yield || formData.yield <= 0) newErrors.yield = 'Please enter a valid yield';
     if (!formData.N || formData.N < 0) newErrors.N = 'Please enter a valid nitrogen value';
@@ -27,7 +27,7 @@ const InputForm = ({ onSubmit, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       onSubmit({
         crop: formData.crop,
@@ -42,49 +42,55 @@ const InputForm = ({ onSubmit, loading }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
   return (
-    <div className="card">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-emerald-500 rounded-lg flex items-center justify-center">
-          <Leaf className="w-5 h-5 text-white" />
+    <div className="card-clean">
+      <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+        <div className="w-10 h-10 bg-[#E8F5E9] rounded-lg flex items-center justify-center">
+          <Leaf className="w-5 h-5 text-[#2E7D32]" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Input Parameters</h2>
-          <p className="text-sm text-gray-500">Enter your crop and soil data</p>
+          <h2 className="text-xl font-bold text-[#1A1A1A]">Input Parameters</h2>
+          <p className="text-sm text-gray-500">Enter crop details and soil composition</p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Crop Selection */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            🌾 Crop Type
+          <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <Sprout className="w-4 h-4 text-[#2E7D32]" />
+            Crop Type
           </label>
-          <select
-            name="crop"
-            value={formData.crop}
-            onChange={handleChange}
-            className={`input-field ${errors.crop ? 'border-red-500' : ''}`}
-            disabled={loading}
-          >
-            <option value="">Select a crop</option>
-            <option value="Wheat">🌾 Wheat</option>
-            <option value="Maize">🌽 Maize</option>
-            <option value="Rice">🍚 Rice</option>
-          </select>
+          <div className="relative">
+            <select
+              name="crop"
+              value={formData.crop}
+              onChange={handleChange}
+              className={`input-field appearance-none ${errors.crop ? 'border-red-500' : ''}`}
+              disabled={loading}
+            >
+              <option value="">Select a crop</option>
+              <option value="Wheat">Wheat</option>
+              <option value="Maize">Maize</option>
+              <option value="Rice">Rice</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
           {errors.crop && <p className="text-red-500 text-xs mt-1">{errors.crop}</p>}
         </div>
 
         {/* Target Yield */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            📊 Target Yield (t/ha)
+          <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <Scale className="w-4 h-4 text-[#2E7D32]" />
+            Target Yield (t/ha)
           </label>
           <input
             type="number"
@@ -101,70 +107,64 @@ const InputForm = ({ onSubmit, loading }) => {
         </div>
 
         {/* Soil Nutrients Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Nitrogen */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              <span className="text-blue-600">N</span> Nitrogen
-            </label>
-            <input
-              type="number"
-              name="N"
-              value={formData.N}
-              onChange={handleChange}
-              placeholder="120"
-              step="0.1"
-              min="0"
-              className={`input-field ${errors.N ? 'border-red-500' : ''}`}
-              disabled={loading}
-            />
-            {errors.N && <p className="text-red-500 text-xs mt-1">{errors.N}</p>}
-          </div>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <FlaskConical className="w-4 h-4 text-[#2E7D32]" />
+            Soil Nutrients (N-P-K)
+          </label>
+          <div className="grid grid-cols-3 gap-4">
+            {/* Nitrogen */}
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Nitrogen (N)</label>
+              <input
+                type="number"
+                name="N"
+                value={formData.N}
+                onChange={handleChange}
+                placeholder="120"
+                className={`input-field ${errors.N ? 'border-red-500' : ''}`}
+                disabled={loading}
+              />
+            </div>
 
-          {/* Phosphorus */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              <span className="text-orange-600">P</span> Phosphorus
-            </label>
-            <input
-              type="number"
-              name="P"
-              value={formData.P}
-              onChange={handleChange}
-              placeholder="50"
-              step="0.1"
-              min="0"
-              className={`input-field ${errors.P ? 'border-red-500' : ''}`}
-              disabled={loading}
-            />
-            {errors.P && <p className="text-red-500 text-xs mt-1">{errors.P}</p>}
-          </div>
+            {/* Phosphorus */}
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Phosphorus (P)</label>
+              <input
+                type="number"
+                name="P"
+                value={formData.P}
+                onChange={handleChange}
+                placeholder="50"
+                className={`input-field ${errors.P ? 'border-red-500' : ''}`}
+                disabled={loading}
+              />
+            </div>
 
-          {/* Potassium */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              <span className="text-purple-600">K</span> Potassium
-            </label>
-            <input
-              type="number"
-              name="K"
-              value={formData.K}
-              onChange={handleChange}
-              placeholder="40"
-              step="0.1"
-              min="0"
-              className={`input-field ${errors.K ? 'border-red-500' : ''}`}
-              disabled={loading}
-            />
-            {errors.K && <p className="text-red-500 text-xs mt-1">{errors.K}</p>}
+            {/* Potassium */}
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Potassium (K)</label>
+              <input
+                type="number"
+                name="K"
+                value={formData.K}
+                onChange={handleChange}
+                placeholder="40"
+                className={`input-field ${errors.K ? 'border-red-500' : ''}`}
+                disabled={loading}
+              />
+            </div>
           </div>
+          {(errors.N || errors.P || errors.K) && (
+            <p className="text-red-500 text-xs mt-1">Please check nutrient values</p>
+          )}
         </div>
 
         {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
-          className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-primary w-full"
         >
           {loading ? (
             <>
@@ -173,7 +173,7 @@ const InputForm = ({ onSubmit, loading }) => {
             </>
           ) : (
             <>
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4" />
               Get Recommendation
             </>
           )}
@@ -181,10 +181,10 @@ const InputForm = ({ onSubmit, loading }) => {
       </form>
 
       {/* Info Box */}
-      <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-xs text-blue-800">
-          <strong>💡 Tip:</strong> Enter accurate soil nutrient levels for the most precise fertilizer recommendations. 
-          Values should be in kg/ha or ppm based on your soil test results.
+      <div className="mt-6 bg-[#F7F9FB] border border-gray-200 rounded-lg p-4 flex gap-3">
+        <Beaker className="w-5 h-5 text-gray-400 flex-shrink-0" />
+        <p className="text-xs text-gray-500 leading-relaxed">
+          <strong>Note:</strong> Ensure soil nutrient levels are accurate (kg/ha or ppm) for precise recommendations.
         </p>
       </div>
     </div>

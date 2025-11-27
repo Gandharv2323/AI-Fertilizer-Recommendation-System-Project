@@ -30,3 +30,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+cp_input.txt
+cp_oops.exe

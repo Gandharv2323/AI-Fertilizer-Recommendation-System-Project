@@ -1,145 +1,194 @@
 import React from 'react';
-import { CheckCircle, TrendingUp, Save, Info } from 'lucide-react';
+import { CheckCircle, Save, Droplets, ShoppingBag, DollarSign, ClipboardList } from 'lucide-react';
 
 const ResultsCard = ({ recommendation, onSave }) => {
+  if (!recommendation) return null;
+
+  const { crop, yield: targetYield, N, P, K, DAP, Urea, MOP } = recommendation;
+
+  // Cost Calculation (Approximate Indian Market Prices)
+  const priceDAP = 1350; // per 50kg bag
+  const priceUrea = 267; // per 45kg bag
+  const priceMOP = 1300; // per 50kg bag
+
+  const costDAP = (DAP / 50) * priceDAP;
+  const costUrea = (Urea / 45) * priceUrea;
+  const costMOP = (MOP / 50) * priceMOP;
+  const totalCost = costDAP + costUrea + costMOP;
+
+  // Bag Calculation
+  const bagsDAP = Math.ceil(DAP / 50);
+  const bagsUrea = Math.ceil(Urea / 45);
+  const bagsMOP = Math.ceil(MOP / 50);
+
   return (
-    <div className="card">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-            <CheckCircle className="w-6 h-6 text-white" />
+    <div className="space-y-6 animate-fade-in">
+      {/* Main Recommendation Card */}
+      <div className="card-clean border-l-4 border-l-[#2E7D32]">
+        <div className="flex justify-between items-start mb-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-[#E8F5E9] p-2 rounded-lg">
+              <CheckCircle className="w-6 h-6 text-[#2E7D32]" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-[#1A1A1A]">Recommendation Results</h2>
+              <p className="text-sm text-gray-500">Optimized fertilizer plan based on KNN algorithm (k=3)</p>
+            </div>
+          </div>
+          <button
+            onClick={onSave}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
+          >
+            <Save className="w-4 h-4" />
+            Save Report
+          </button>
+        </div>
+
+        {/* Summary Grid */}
+        <div className="grid grid-cols-3 gap-4 mb-8 bg-[#F7F9FB] p-4 rounded-xl border border-gray-100">
+          <div>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Crop Type</p>
+            <p className="text-lg font-bold text-[#1A1A1A]">{crop}</p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">Recommendation Results</h2>
-            <p className="text-sm text-gray-500">Based on KNN Algorithm (k={recommendation.k})</p>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Target Yield</p>
+            <p className="text-lg font-bold text-[#1A1A1A]">{targetYield} t/ha</p>
+          </div>
+          <div>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Soil NPK</p>
+            <p className="text-lg font-bold text-[#1A1A1A]">{N} - {P} - {K}</p>
           </div>
         </div>
-        <button
-          onClick={onSave}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
-          title="Save this recommendation"
-        >
-          <Save className="w-4 h-4" />
-          <span className="hidden sm:inline">Save</span>
-        </button>
-      </div>
 
-      {/* Crop Info */}
-      <div className="bg-gradient-to-r from-primary-50 to-emerald-50 rounded-xl p-4 mb-6 border border-primary-100">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <p className="text-sm text-gray-600 mb-1">Crop Type</p>
-            <p className="text-2xl font-bold text-primary-700">{recommendation.crop}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600 mb-1">Target Yield</p>
-            <p className="text-2xl font-bold text-primary-700">{recommendation.yield} t/ha</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600 mb-1">Soil NPK</p>
-            <p className="text-lg font-semibold text-gray-700">
-              {recommendation.N} - {recommendation.P} - {recommendation.K}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Fertilizer Recommendations */}
-      <div className="space-y-4 mb-6">
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-primary-600" />
+        {/* Recommended Fertilizers Grid */}
+        <h3 className="section-title">
+          <Droplets className="w-5 h-5 text-[#2E7D32]" />
           Recommended Fertilizers
         </h3>
 
-        {/* DAP */}
-        <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4 border-l-4 border-blue-500">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-sm text-blue-700 font-medium mb-1">DAP (Diammonium Phosphate)</p>
-              <p className="text-xs text-blue-600">Provides both Nitrogen and Phosphorus</p>
-              <p className="text-xs text-blue-500 mt-1">₹27/kg | ₹1,350 per 50kg bag</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {/* DAP Card */}
+          <div className="p-4 rounded-xl border border-gray-200 hover:border-blue-300 transition-colors bg-white">
+            <div className="flex justify-between items-start mb-2">
+              <h4 className="font-bold text-blue-700">DAP</h4>
+              <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full font-medium">Phosphorus</span>
             </div>
-            <div className="text-right">
-              <p className="text-3xl font-bold text-blue-700">{recommendation.DAP}</p>
-              <p className="text-sm text-blue-600">kg/ha</p>
-              <p className="text-xs text-blue-700 font-semibold mt-1">₹{(parseFloat(recommendation.DAP) * 27).toFixed(2)}</p>
+            <div className="mb-2">
+              <span className="text-3xl font-bold text-[#1A1A1A]">{DAP}</span>
+              <span className="text-sm text-gray-500 ml-1">kg/ha</span>
+            </div>
+            <p className="text-xs text-gray-500">Diammonium Phosphate</p>
+            <p className="text-xs text-blue-600 mt-2 font-medium">₹{costDAP.toFixed(2)}</p>
+          </div>
+
+          {/* Urea Card */}
+          <div className="p-4 rounded-xl border border-gray-200 hover:border-emerald-300 transition-colors bg-white">
+            <div className="flex justify-between items-start mb-2">
+              <h4 className="font-bold text-emerald-700">Urea</h4>
+              <span className="bg-emerald-50 text-emerald-700 text-xs px-2 py-1 rounded-full font-medium">Nitrogen</span>
+            </div>
+            <div className="mb-2">
+              <span className="text-3xl font-bold text-[#1A1A1A]">{Urea}</span>
+              <span className="text-sm text-gray-500 ml-1">kg/ha</span>
+            </div>
+            <p className="text-xs text-gray-500">Primary Nitrogen Source</p>
+            <p className="text-xs text-emerald-600 mt-2 font-medium">₹{costUrea.toFixed(2)}</p>
+          </div>
+
+          {/* MOP Card */}
+          <div className="p-4 rounded-xl border border-gray-200 hover:border-purple-300 transition-colors bg-white">
+            <div className="flex justify-between items-start mb-2">
+              <h4 className="font-bold text-purple-700">MOP</h4>
+              <span className="bg-purple-50 text-purple-700 text-xs px-2 py-1 rounded-full font-medium">Potassium</span>
+            </div>
+            <div className="mb-2">
+              <span className="text-3xl font-bold text-[#1A1A1A]">{MOP}</span>
+              <span className="text-sm text-gray-500 ml-1">kg/ha</span>
+            </div>
+            <p className="text-xs text-gray-500">Muriate of Potash</p>
+            <p className="text-xs text-purple-600 mt-2 font-medium">₹{costMOP.toFixed(2)}</p>
+          </div>
+        </div>
+
+        {/* Cost Breakdown */}
+        <div className="bg-[#FFFDE7] border border-[#FFF9C4] rounded-xl p-6 mb-6">
+          <h3 className="text-sm font-bold text-[#F57F17] mb-4 flex items-center gap-2">
+            
+            Cost Estimation (Nov 2025 Prices)
+          </h3>
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
+              <span className="text-gray-700">DAP (83.33 kg × ₹27/kg)</span>
+              <span className="font-mono font-medium text-[#2E7D32]">₹{costDAP.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
+              <span className="text-gray-700">Urea (166.67 kg × ₹6/kg)</span>
+              <span className="font-mono font-medium text-[#2E7D32]">₹{costUrea.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
+              <span className="text-gray-700">MOP (116.67 kg × ₹26/kg)</span>
+              <span className="font-mono font-medium text-[#2E7D32]">₹{costMOP.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between pt-2 mt-2">
+              <span className="font-bold text-gray-800">Total Cost per Hectare</span>
+              <span className="font-bold text-lg text-[#2E7D32]">₹{totalCost.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-xs text-gray-500">
+              <span>Cost per Acre (÷ 2.47)</span>
+              <span>₹{(totalCost / 2.47).toFixed(2)}</span>
             </div>
           </div>
         </div>
 
-        {/* Urea */}
-        <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 border-l-4 border-green-500">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-sm text-green-700 font-medium mb-1">Urea</p>
-              <p className="text-xs text-green-600">Primary source of Nitrogen</p>
-              <p className="text-xs text-green-500 mt-1">₹6/kg | ₹267 per 45kg bag (Subsidized)</p>
+        {/* Required Bags */}
+        <div className="mb-6">
+          <h3 className="section-title">
+            <ShoppingBag className="w-5 h-5 text-[#2E7D32]" />
+            Required Bags (per hectare)
+          </h3>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+              <p className="text-xs font-bold text-blue-600 mb-1">DAP</p>
+              <p className="text-xl font-bold text-[#1A1A1A]">{bagsDAP} <span className="text-xs font-normal text-gray-500">bags</span></p>
+              <p className="text-[10px] text-gray-400 mt-1">50kg bag</p>
             </div>
-            <div className="text-right">
-              <p className="text-3xl font-bold text-green-700">{recommendation.Urea}</p>
-              <p className="text-sm text-green-600">kg/ha</p>
-              <p className="text-xs text-green-700 font-semibold mt-1">₹{(parseFloat(recommendation.Urea) * 6).toFixed(2)}</p>
+            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+              <p className="text-xs font-bold text-emerald-600 mb-1">Urea</p>
+              <p className="text-xl font-bold text-[#1A1A1A]">{bagsUrea} <span className="text-xs font-normal text-gray-500">bags</span></p>
+              <p className="text-[10px] text-gray-400 mt-1">45kg bag</p>
             </div>
-          </div>
-        </div>
-
-        {/* MOP */}
-        <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4 border-l-4 border-purple-500">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-sm text-purple-700 font-medium mb-1">MOP (Muriate of Potash)</p>
-              <p className="text-xs text-purple-600">Primary source of Potassium</p>
-              <p className="text-xs text-purple-500 mt-1">₹26/kg | ₹1,300 per 50kg bag</p>
-            </div>
-            <div className="text-right">
-              <p className="text-3xl font-bold text-purple-700">{recommendation.MOP}</p>
-              <p className="text-sm text-purple-600">kg/ha</p>
-              <p className="text-xs text-purple-700 font-semibold mt-1">₹{(parseFloat(recommendation.MOP) * 26).toFixed(2)}</p>
+            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+              <p className="text-xs font-bold text-purple-600 mb-1">MOP</p>
+              <p className="text-xl font-bold text-[#1A1A1A]">{bagsMOP} <span className="text-xs font-normal text-gray-500">bags</span></p>
+              <p className="text-[10px] text-gray-400 mt-1">50kg bag</p>
             </div>
           </div>
+          <p className="text-xs text-center text-gray-400 mt-2">
+            Current Prices: DAP ₹1,350 | Urea ₹267 | MOP ₹1,300
+          </p>
         </div>
-      </div>
 
-      {/* Nearest Neighbors Info */}
-      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-        <div className="flex items-start gap-2 mb-3">
-          <Info className="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-semibold text-gray-700 mb-2">
-              Based on {recommendation.k} Most Similar Historical Cases:
-            </p>
-            <div className="space-y-2">
-              {recommendation.neighbors.map((neighbor, index) => (
-                <div key={index} className="text-xs text-gray-600 bg-white rounded p-2 border border-gray-100">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">
-                      #{index + 1}: {neighbor.crop} (Yield: {neighbor.yield} t/ha)
-                    </span>
-                    <span className="text-gray-400">
-                      Distance: {neighbor.distance}
-                    </span>
-                  </div>
-                  <div className="mt-1 text-gray-500">
-                    NPK: {neighbor.soilN}-{neighbor.soilP}-{neighbor.soilK} → 
-                    DAP: {neighbor.dap}, Urea: {neighbor.urea}, MOP: {neighbor.mop}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Application Guidelines */}
+        <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+          <h3 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+            <ClipboardList className="w-4 h-4 text-gray-600" />
+            Application Guidelines
+          </h3>
+          <ul className="space-y-2 text-sm text-gray-600">
+            <li className="flex items-start gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D32] mt-1.5 flex-shrink-0" />
+              Apply fertilizers in split doses for better nutrient uptake efficiency.
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D32] mt-1.5 flex-shrink-0" />
+              Ensure proper soil moisture before application to prevent root burn.
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D32] mt-1.5 flex-shrink-0" />
+              Mix fertilizers thoroughly with soil to avoid volatilization losses.
+            </li>
+          </ul>
         </div>
-      </div>
-
-      {/* Application Tips */}
-      <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
-        <p className="text-sm text-amber-800 font-semibold mb-2">📋 Application Guidelines:</p>
-        <ul className="text-xs text-amber-700 space-y-1 list-disc list-inside">
-          <li>Apply fertilizers in split doses for better nutrient uptake</li>
-          <li>Consider soil moisture and weather conditions before application</li>
-          <li>Monitor crop response and adjust subsequent applications if needed</li>
-          <li>Conduct soil tests periodically to track nutrient levels</li>
-        </ul>
       </div>
     </div>
   );

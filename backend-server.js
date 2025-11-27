@@ -146,11 +146,14 @@ app.get('/api/historical-data', (req, res) => {
 });
 
 const PORT = process.env.PORT || 8080;
+// Optional display host name (for console output). To use a custom hostname like
+// "api.local" map it to 127.0.0.1 in your OS hosts file and set API_HOST accordingly.
+const DISPLAY_HOST = process.env.API_HOST || 'localhost';
 
 app.listen(PORT, () => {
-    console.log(`🚀 Backend API Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Backend API Server running on http://${DISPLAY_HOST}:${PORT}`);
     console.log(`📊 Endpoints:`);
-    console.log(`   POST http://localhost:${PORT}/api/recommend`);
-    console.log(`   GET  http://localhost:${PORT}/api/health`);
-    console.log(`   GET  http://localhost:${PORT}/api/historical-data`);
+    console.log(`   POST http://${DISPLAY_HOST}:${PORT}/api/recommend`);
+    console.log(`   GET  http://${DISPLAY_HOST}:${PORT}/api/health`);
+    console.log(`   GET  http://${DISPLAY_HOST}:${PORT}/api/historical-data`);
 });
