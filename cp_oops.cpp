@@ -4,7 +4,179 @@
 #include <algorithm>
 #include <iomanip>
 #include <string>
+#include <unordered_map>
+#include <queue>
+#include <stack>
 using namespace std;
+
+// ========== DATA STRUCTURE 1: ARRAY-BASED NUTRIENT TRACKER ==========
+class NutrientArray {
+private:
+    double nutrients[3]; // N, P, K
+    int size;
+public:
+    NutrientArray() : size(3) {
+        nutrients[0] = nutrients[1] = nutrients[2] = 0;
+    }
+    
+    void set(int index, double value) {
+        if (index >= 0 && index < size) nutrients[index] = value;
+    }
+    
+    double get(int index) const {
+        return (index >= 0 && index < size) ? nutrients[index] : 0;
+    }
+    
+    void display() const {
+        cout << "[ARRAY DS] N=" << nutrients[0] << ", P=" << nutrients[1] 
+             << ", K=" << nutrients[2] << endl;
+    }
+};
+
+// ========== DATA STRUCTURE 2: SINGLY LINKED LIST FOR FARM RECORDS ==========
+class FarmRecord {
+public:
+    string farmName;
+    double area;
+    FarmRecord* next;
+    
+    FarmRecord(string name, double a) : farmName(name), area(a), next(nullptr) {}
+};
+
+class FarmRecordList {
+private:
+    FarmRecord* head;
+public:
+    FarmRecordList() : head(nullptr) {}
+    
+    ~FarmRecordList() {
+        while (head) {
+            FarmRecord* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+    
+    void addRecord(string name, double area) {
+        FarmRecord* newRec = new FarmRecord(name, area);
+        newRec->next = head;
+        head = newRec;
+        cout << "[LINKED LIST DS] Added farm: " << name << endl;
+    }
+    
+    void displayAll() const {
+        cout << "[LINKED LIST DS] Farm Records:\n";
+        FarmRecord* curr = head;
+        while (curr) {
+            cout << "  - " << curr->farmName << " (" << curr->area << " ha)\n";
+            curr = curr->next;
+        }
+    }
+};
+
+// ========== DATA STRUCTURE 3: STACK FOR OPERATION HISTORY ==========
+class OperationStack {
+private:
+    stack<string> operations;
+public:
+    void push(string op) {
+        operations.push(op);
+        cout << "[STACK DS] Operation logged: " << op << endl;
+    }
+    
+    void showHistory() {
+        cout << "[STACK DS] Recent Operations (LIFO):\n";
+        stack<string> temp = operations;
+        while (!temp.empty()) {
+            cout << "  - " << temp.top() << endl;
+            temp.pop();
+        }
+    }
+};
+
+// ========== DATA STRUCTURE 4: HASH MAP FOR CROP DATABASE ==========
+class CropDatabase {
+private:
+    unordered_map<string, double> cropYieldMap;
+public:
+    CropDatabase() {
+        cropYieldMap["Wheat"] = 4.5;
+        cropYieldMap["Maize"] = 5.2;
+        cropYieldMap["Rice"] = 6.0;
+        cropYieldMap["Cotton"] = 3.8;
+        cout << "[HASH MAP DS] Crop database initialized with 4 crops\n";
+    }
+    
+    void addCrop(string name, double avgYield) {
+        cropYieldMap[name] = avgYield;
+        cout << "[HASH MAP DS] Added " << name << " with avg yield " << avgYield << " t/ha\n";
+    }
+    
+    double getAvgYield(string name) {
+        return cropYieldMap.count(name) ? cropYieldMap[name] : 0.0;
+    }
+    
+    void displayAll() const {
+        cout << "[HASH MAP DS] Crop Database:\n";
+        for (const auto& entry : cropYieldMap) {
+            cout << "  " << entry.first << ": " << entry.second << " t/ha\n";
+        }
+    }
+};
+
+// ========== DATA STRUCTURE 5: BINARY SEARCH TREE FOR YIELD RECORDS ==========
+class YieldNode {
+public:
+    double yield;
+    string cropName;
+    YieldNode* left;
+    YieldNode* right;
+    
+    YieldNode(double y, string c) : yield(y), cropName(c), left(nullptr), right(nullptr) {}
+};
+
+class YieldBST {
+private:
+    YieldNode* root;
+    
+    YieldNode* insert(YieldNode* node, double y, string c) {
+        if (!node) return new YieldNode(y, c);
+        if (y < node->yield) node->left = insert(node->left, y, c);
+        else node->right = insert(node->right, y, c);
+        return node;
+    }
+    
+    void inorder(YieldNode* node) const {
+        if (!node) return;
+        inorder(node->left);
+        cout << "  " << node->cropName << ": " << node->yield << " t/ha\n";
+        inorder(node->right);
+    }
+    
+    void cleanup(YieldNode* node) {
+        if (!node) return;
+        cleanup(node->left);
+        cleanup(node->right);
+        delete node;
+    }
+    
+public:
+    YieldBST() : root(nullptr) {}
+    
+    ~YieldBST() {
+        cleanup(root);
+    }
+    
+    void addYield(double y, string c) {
+        root = insert(root, y, c);
+        cout << "[BST DS] Added " << c << " yield: " << y << " t/ha\n";
+    }
+    
+    void displaySorted() const {
+        cout << "[BST DS] Yields (sorted by value):\n";
+        inorder(root);
+    }
+};
 
 class FarmEntity {
 protected:
@@ -183,9 +355,30 @@ private:
     vector<HistoricalData> historicalDatabase;
     RecommendationStrategy* aiEngine;
     
+    // Data structure instances
+    NutrientArray nutrientTracker;
+    FarmRecordList farmRecords;
+    OperationStack opHistory;
+    CropDatabase cropDB;
+    YieldBST yieldTree;
+    
 public:
     FarmManager() : farmSoil(nullptr), farmCrop(nullptr), aiEngine(nullptr) {
         cout << "[COMPOSITION] FarmManager created with internal components\n";
+        cout << "\n========== INITIALIZING DATA STRUCTURES ==========\n";
+        
+        // Initialize data structures with sample data
+        farmRecords.addRecord("Green Valley Farm", 50.5);
+        farmRecords.addRecord("Sunrise Orchards", 30.2);
+        
+        opHistory.push("System Initialized");
+        
+        yieldTree.addYield(4.2, "Wheat");
+        yieldTree.addYield(5.5, "Maize");
+        yieldTree.addYield(6.0, "Rice");
+        yieldTree.addYield(3.8, "Cotton");
+        
+        cout << "==================================================\n\n";
         
         historicalDatabase.push_back(HistoricalData("Wheat", 120, 50, 40, 4.2, 100, 200, 150));
         historicalDatabase.push_back(HistoricalData("Maize", 90, 45, 30, 5.0, 80, 180, 140));
@@ -207,6 +400,14 @@ public:
         delete farmSoil;
         farmSoil = new Soil(n, p, k);
         cout << "[ENCAPSULATION] Soil data set with private member access\n";
+        
+        // Store in array data structure
+        nutrientTracker.set(0, n);
+        nutrientTracker.set(1, p);
+        nutrientTracker.set(2, k);
+        nutrientTracker.display();
+        
+        opHistory.push("Set soil NPK values");
     }
     
     void setCrop(string cropType, double targetYield) {
@@ -222,6 +423,16 @@ public:
             farmCrop = new RiceCrop(targetYield);
         } else {
             farmCrop = new Crop(cropType, targetYield);
+        }
+        
+        // Add to BST and log operation
+        yieldTree.addYield(targetYield, cropType);
+        opHistory.push("Set crop: " + cropType);
+        
+        // Check against crop database
+        double avgYield = cropDB.getAvgYield(cropType);
+        if (avgYield > 0) {
+            cout << "[HASH MAP DS] Average yield for " << cropType << ": " << avgYield << " t/ha\n";
         }
     }
     
@@ -246,6 +457,18 @@ public:
         
         cout << "[ABSTRACTION] Using AI engine through abstract interface...\n";
         aiEngine->generateRecommendation(*farmSoil, *farmCrop, historicalDatabase, k);
+        
+        opHistory.push("Generated recommendation");
+    }
+    
+    void showDataStructures() {
+        cout << "\n========== DATA STRUCTURES DEMONSTRATION ==========\n";
+        nutrientTracker.display();
+        farmRecords.displayAll();
+        cropDB.displayAll();
+        yieldTree.displaySorted();
+        opHistory.showHistory();
+        cout << "===================================================\n\n";
     }
 };
 
@@ -276,6 +499,17 @@ int main() {
     manager.displayFarmInfo();
     
     manager.generateRecommendation(3);
+    
+    // Display all data structures
+    manager.showDataStructures();
+    
+    cout << "\n========== DATA STRUCTURES SUMMARY ==========\n";
+    cout << "✓ ARRAY: Used for NPK nutrient tracking\n";
+    cout << "✓ LINKED LIST: Manages farm records\n";
+    cout << "✓ STACK: Tracks operation history (LIFO)\n";
+    cout << "✓ HASH MAP: Fast crop database lookups\n";
+    cout << "✓ BINARY SEARCH TREE: Sorted yield records\n";
+    cout << "=============================================\n";
     
     return 0;
 }
