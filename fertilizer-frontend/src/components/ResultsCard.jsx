@@ -11,6 +11,11 @@ const ResultsCard = ({ recommendation, onSave }) => {
   const priceUrea = 267; // per 45kg bag
   const priceMOP = 1300; // per 50kg bag
 
+  // Calculate price per kg
+  const pricePerKgDAP = priceDAP / 50; // ₹27/kg
+  const pricePerKgUrea = priceUrea / 45; // ₹5.93/kg
+  const pricePerKgMOP = priceMOP / 50; // ₹26/kg
+
   const costDAP = (DAP / 50) * priceDAP;
   const costUrea = (Urea / 45) * priceUrea;
   const costMOP = (MOP / 50) * priceMOP;
@@ -113,20 +118,20 @@ const ResultsCard = ({ recommendation, onSave }) => {
         {/* Cost Breakdown */}
         <div className="bg-[#FFFDE7] border border-[#FFF9C4] rounded-xl p-6 mb-6">
           <h3 className="text-sm font-bold text-[#F57F17] mb-4 flex items-center gap-2">
-            
+            <DollarSign className="w-4 h-4" />
             Cost Estimation (Nov 2025 Prices)
           </h3>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
-              <span className="text-gray-700">DAP (83.33 kg × ₹27/kg)</span>
+              <span className="text-gray-700">DAP ({DAP.toFixed(2)} kg × ₹{pricePerKgDAP.toFixed(2)}/kg)</span>
               <span className="font-mono font-medium text-[#2E7D32]">₹{costDAP.toFixed(2)}</span>
             </div>
             <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
-              <span className="text-gray-700">Urea (166.67 kg × ₹6/kg)</span>
+              <span className="text-gray-700">Urea ({Urea.toFixed(2)} kg × ₹{pricePerKgUrea.toFixed(2)}/kg)</span>
               <span className="font-mono font-medium text-[#2E7D32]">₹{costUrea.toFixed(2)}</span>
             </div>
             <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
-              <span className="text-gray-700">MOP (116.67 kg × ₹26/kg)</span>
+              <span className="text-gray-700">MOP ({MOP.toFixed(2)} kg × ₹{pricePerKgMOP.toFixed(2)}/kg)</span>
               <span className="font-mono font-medium text-[#2E7D32]">₹{costMOP.toFixed(2)}</span>
             </div>
             <div className="flex justify-between pt-2 mt-2">
