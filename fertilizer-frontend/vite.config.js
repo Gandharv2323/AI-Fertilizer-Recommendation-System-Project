@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/AI-Fertilizer-Recommendation-System-Project/',
+  base: process.env.VERCEL ? '/' : '/AI-Fertilizer-Recommendation-System-Project/',
   plugins: [react()],
   server: {
     host: '127.0.0.1', // bind explicitly to IPv4 localhost to avoid IPv6 binding issues
