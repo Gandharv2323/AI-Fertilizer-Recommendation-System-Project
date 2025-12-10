@@ -6,6 +6,11 @@ const ResultsCard = ({ recommendation, onSave }) => {
 
   const { crop, yield: targetYield, N, P, K, DAP, Urea, MOP } = recommendation;
 
+  // Convert to numbers (backend returns strings from toFixed)
+  const dapAmount = parseFloat(DAP);
+  const ureaAmount = parseFloat(Urea);
+  const mopAmount = parseFloat(MOP);
+
   // Cost Calculation (Approximate Indian Market Prices)
   const priceDAP = 1350; // per 50kg bag
   const priceUrea = 267; // per 45kg bag
@@ -16,15 +21,15 @@ const ResultsCard = ({ recommendation, onSave }) => {
   const pricePerKgUrea = priceUrea / 45; // ₹5.93/kg
   const pricePerKgMOP = priceMOP / 50; // ₹26/kg
 
-  const costDAP = (DAP / 50) * priceDAP;
-  const costUrea = (Urea / 45) * priceUrea;
-  const costMOP = (MOP / 50) * priceMOP;
+  const costDAP = (dapAmount / 50) * priceDAP;
+  const costUrea = (ureaAmount / 45) * priceUrea;
+  const costMOP = (mopAmount / 50) * priceMOP;
   const totalCost = costDAP + costUrea + costMOP;
 
   // Bag Calculation
-  const bagsDAP = Math.ceil(DAP / 50);
-  const bagsUrea = Math.ceil(Urea / 45);
-  const bagsMOP = Math.ceil(MOP / 50);
+  const bagsDAP = Math.ceil(dapAmount / 50);
+  const bagsUrea = Math.ceil(ureaAmount / 45);
+  const bagsMOP = Math.ceil(mopAmount / 50);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -79,7 +84,7 @@ const ResultsCard = ({ recommendation, onSave }) => {
               <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full font-medium">Phosphorus</span>
             </div>
             <div className="mb-2">
-              <span className="text-3xl font-bold text-[#1A1A1A]">{DAP}</span>
+              <span className="text-3xl font-bold text-[#1A1A1A]">{dapAmount}</span>
               <span className="text-sm text-gray-500 ml-1">kg/ha</span>
             </div>
             <p className="text-xs text-gray-500">Diammonium Phosphate</p>
@@ -93,7 +98,7 @@ const ResultsCard = ({ recommendation, onSave }) => {
               <span className="bg-emerald-50 text-emerald-700 text-xs px-2 py-1 rounded-full font-medium">Nitrogen</span>
             </div>
             <div className="mb-2">
-              <span className="text-3xl font-bold text-[#1A1A1A]">{Urea}</span>
+              <span className="text-3xl font-bold text-[#1A1A1A]">{ureaAmount}</span>
               <span className="text-sm text-gray-500 ml-1">kg/ha</span>
             </div>
             <p className="text-xs text-gray-500">Primary Nitrogen Source</p>
@@ -107,7 +112,7 @@ const ResultsCard = ({ recommendation, onSave }) => {
               <span className="bg-purple-50 text-purple-700 text-xs px-2 py-1 rounded-full font-medium">Potassium</span>
             </div>
             <div className="mb-2">
-              <span className="text-3xl font-bold text-[#1A1A1A]">{MOP}</span>
+              <span className="text-3xl font-bold text-[#1A1A1A]">{mopAmount}</span>
               <span className="text-sm text-gray-500 ml-1">kg/ha</span>
             </div>
             <p className="text-xs text-gray-500">Muriate of Potash</p>
@@ -123,15 +128,15 @@ const ResultsCard = ({ recommendation, onSave }) => {
           </h3>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
-              <span className="text-gray-700">DAP ({DAP.toFixed(2)} kg × ₹{pricePerKgDAP.toFixed(2)}/kg)</span>
+              <span className="text-gray-700">DAP ({dapAmount.toFixed(2)} kg × ₹{pricePerKgDAP.toFixed(2)}/kg)</span>
               <span className="font-mono font-medium text-[#2E7D32]">₹{costDAP.toFixed(2)}</span>
             </div>
             <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
-              <span className="text-gray-700">Urea ({Urea.toFixed(2)} kg × ₹{pricePerKgUrea.toFixed(2)}/kg)</span>
+              <span className="text-gray-700">Urea ({ureaAmount.toFixed(2)} kg × ₹{pricePerKgUrea.toFixed(2)}/kg)</span>
               <span className="font-mono font-medium text-[#2E7D32]">₹{costUrea.toFixed(2)}</span>
             </div>
             <div className="flex justify-between py-2 border-b border-[#FFF9C4]/50">
-              <span className="text-gray-700">MOP ({MOP.toFixed(2)} kg × ₹{pricePerKgMOP.toFixed(2)}/kg)</span>
+              <span className="text-gray-700">MOP ({mopAmount.toFixed(2)} kg × ₹{pricePerKgMOP.toFixed(2)}/kg)</span>
               <span className="font-mono font-medium text-[#2E7D32]">₹{costMOP.toFixed(2)}</span>
             </div>
             <div className="flex justify-between pt-2 mt-2">
