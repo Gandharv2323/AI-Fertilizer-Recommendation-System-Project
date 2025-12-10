@@ -21,9 +21,10 @@ const ResultsCard = ({ recommendation, onSave }) => {
   const pricePerKgUrea = priceUrea / 45; // ₹5.93/kg
   const pricePerKgMOP = priceMOP / 50; // ₹26/kg
 
-  const costDAP = (dapAmount / 50) * priceDAP;
-  const costUrea = (ureaAmount / 45) * priceUrea;
-  const costMOP = (mopAmount / 50) * priceMOP;
+  // Calculate total cost based on amount in kg × price per kg
+  const costDAP = dapAmount * pricePerKgDAP;
+  const costUrea = ureaAmount * pricePerKgUrea;
+  const costMOP = mopAmount * pricePerKgMOP;
   const totalCost = costDAP + costUrea + costMOP;
 
   // Bag Calculation
