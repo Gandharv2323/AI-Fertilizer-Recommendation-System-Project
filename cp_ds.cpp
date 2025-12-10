@@ -473,8 +473,7 @@ public:
 };
 
 int main() {
-    cout << "========== ADVANCED OOP FERTILIZER RECOMMENDATION SYSTEM ==========\n\n";
-    cout << "Demonstrating: Encapsulation, Inheritance, Polymorphism, Abstraction\n\n";
+    cout << "========== FERTILIZER RECOMMENDATION SYSTEM ==========\n\n";
     
     FarmManager manager;
     

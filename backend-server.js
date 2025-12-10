@@ -150,9 +150,12 @@ const PORT = process.env.PORT || 8080;
 // "api.local" map it to 127.0.0.1 in your OS hosts file and set API_HOST accordingly.
 const DISPLAY_HOST = process.env.API_HOST || 'localhost';
 
+
 app.listen(PORT, () => {
     console.log(`🚀 Backend API Server running on http://${DISPLAY_HOST}:${PORT}`);
     console.log(`📊 Endpoints:`);
+
+
     console.log(`   POST http://${DISPLAY_HOST}:${PORT}/api/recommend`);
     console.log(`   GET  http://${DISPLAY_HOST}:${PORT}/api/health`);
     console.log(`   GET  http://${DISPLAY_HOST}:${PORT}/api/historical-data`);
